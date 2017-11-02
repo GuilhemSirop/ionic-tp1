@@ -9,6 +9,8 @@ import { Camera } from '@ionic-native/camera';
 import { MediaCapture } from "@ionic-native/media-capture";
 // Module Base64ToGallery pour convertir les images en Base 64
 import { Base64ToGallery } from '@ionic-native/base64-to-gallery';
+// Import du module de notification
+import { LocalNotifications } from '@ionic-native/local-notifications';
 
 @NgModule({
   declarations: [
@@ -21,7 +23,8 @@ import { Base64ToGallery } from '@ionic-native/base64-to-gallery';
   providers: [
     Camera,
     Base64ToGallery,
-    MediaCapture
+    MediaCapture,
+    LocalNotifications
   ]
 })
 export class CameraPageModule {}

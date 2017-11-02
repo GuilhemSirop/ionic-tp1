@@ -3,12 +3,14 @@ import { Component } from '@angular/core';
 import {Camera} from '@ionic-native/camera';
 // Import du module Base64ToGallery pour convertir les photos en Base 64
 import { Base64ToGallery } from '@ionic-native/base64-to-gallery';
-// Import du modul Media Capture pour prendre des vidéos
+// Import du module Media Capture pour prendre des vidéos
 import { MediaCapture, MediaFile, CaptureError, CaptureImageOptions } from '@ionic-native/media-capture';
-// On importe pour permettre un menu multiple
+// Import menu multiple
 import { ActionSheetController } from 'ionic-angular'
-// On importe le loader
+// Import loader
 import { LoadingController } from 'ionic-angular';
+// Import du module de notification
+import { LocalNotifications } from '@ionic-native/local-notifications';
 
 @Component({
   selector: 'page-camera',
@@ -18,13 +20,17 @@ import { LoadingController } from 'ionic-angular';
 /* *** CLASSE HomePage *** */
 export class CameraPage {
   // Déclaration des attributs de la Classe
+  // -- Tableau d'image
   base64Image: String[];
+  // -- Chemin vers la vidéo
+  path: string;
 
   constructor(private camera: Camera,
               private base64ToGallery: Base64ToGallery,
               public actionSheetCtrl: ActionSheetController,
               public loadingCtrl: LoadingController,
-              private mediaCapture: MediaCapture) {
+              private mediaCapture: MediaCapture,
+              private localNotifications: LocalNotifications) {
     // On instancie les attributs
     this.base64Image = [];
 
@@ -66,11 +72,20 @@ export class CameraPage {
     // On supprime les caractères spécifiques à la balise img pour pouvoir récupérer uniquement la base 64 de l'image
     this.base64ToGallery.base64ToGallery(this.base64Image[key].replace("data:image/jpeg;base64,", ''), { prefix: '_img' }).then(
       res => {
+        // Notification
+        this.localNotifications.schedule({
+          text: 'Image enregistrée dans votre galerie'
+        });
         console.log('Saved image to gallery ', res);
+        // Fermeture du Loader
         loading.dismiss();
       },
       err => {
+        this.localNotifications.schedule({
+          text: `Un problème est survenu lors de l'enregistrement de votre photo`
+        });
         console.log('Error saving image to gallery ', err);
+        // Fermeture du Loader
         loading.dismiss();
       }
     );
@@ -81,6 +96,10 @@ export class CameraPage {
   /***************************************/
   removePicture(key){
     this.base64Image.splice(key, 1);
+    // Notification
+    this.localNotifications.schedule({
+      text: 'Image supprimée'
+    });
   }
 
   /***************************************/
@@ -128,7 +147,14 @@ export class CameraPage {
     let options: CaptureImageOptions = { limit: 10 };
     this.mediaCapture.captureImage(options)
       .then(
-        (data: MediaFile[]) => console.log(data),
+        (data: MediaFile[]) => {
+          // On assigne le chemin à la variable $path
+          this.path = data[0].fullPath;
+          // Notification
+          this.localNotifications.schedule({
+            text: 'Vidéo enregistrée'
+          });
+        },
         (err: CaptureError) => console.error(err)
       );
   }
