@@ -2,5 +2,7 @@
   "name": "ionic-tp1",
   "app_id": "a809bcdc",
   "type": "ionic-angular",
-  "integrations": {}
+  "integrations": {
+    "cordova": {}
+  }
 }
