@@ -73,17 +73,14 @@ export class CameraPage {
     this.base64ToGallery.base64ToGallery(this.base64Image[key].replace("data:image/jpeg;base64,", ''), { prefix: '_img' }).then(
       res => {
         // Notification
-        this.localNotifications.schedule({
-          text: 'Image enregistrée dans votre galerie'
-        });
+        this.sendNotification('Image enregistrée dans votre galerie');
         console.log('Saved image to gallery ', res);
         // Fermeture du Loader
         loading.dismiss();
       },
       err => {
-        this.localNotifications.schedule({
-          text: `Un problème est survenu lors de l'enregistrement de votre photo`
-        });
+        // Notification
+        this.sendNotification(`Un problème est survenu lors de l'enregistrement de votre photo`);
         console.log('Error saving image to gallery ', err);
         // Fermeture du Loader
         loading.dismiss();
@@ -97,9 +94,7 @@ export class CameraPage {
   removePicture(key){
     this.base64Image.splice(key, 1);
     // Notification
-    this.localNotifications.schedule({
-      text: 'Image supprimée'
-    });
+    this.sendNotification('Votre image a été supprimée !');
   }
 
   /***************************************/
@@ -151,11 +146,18 @@ export class CameraPage {
           // On assigne le chemin à la variable $path
           this.path = data[0].fullPath;
           // Notification
-          this.localNotifications.schedule({
-            text: 'Vidéo enregistrée'
-          });
+          this.sendNotification('Votre vidéo a été enregistrée dans votre galerie !');
         },
         (err: CaptureError) => console.error(err)
       );
+  }
+
+  /***************************************/
+  /* *** *** ENVOYER UNE NOTIFICATION *** *** */
+  /***************************************/
+  sendNotification(message){
+    this.localNotifications.schedule({
+      text: message
+    });
   }
 }
