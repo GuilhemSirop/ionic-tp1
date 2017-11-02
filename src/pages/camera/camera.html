@@ -1,0 +1,55 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Camera</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <h3>Module Camera</h3>
+
+  <p>
+    Vous pouvez prendre des photos
+  </p>
+
+  <!-- PHOTO -->
+  <ion-card>
+    <ion-card-content>
+      <!-- Bouton prendre une photo -> Appel fonction takePicture() -->
+      <button ion-button (click)="takePicture()">
+        <ion-icon name="ios-camera"></ion-icon>
+        &nbsp;prendre une photo&nbsp;
+        <ion-icon name="ios-camera"></ion-icon>
+      </button>
+
+      <!-- Affichage des photos -->
+      <p *ngIf="base64Image.length > 0">VOS PHOTOS</p>
+      <img *ngFor="let img of base64Image; let i = index" [src]="img" (click)="presentActionSheet(i)" />
+      <!-- FIN Affichage des photos -->
+
+    </ion-card-content>
+  </ion-card>
+  <!-- FIN PHOTO -->
+
+
+  <!-- VIDEO -->
+  <ion-card>
+    <ion-card-content>
+
+      <button ion-button (click)="takeVideo()">
+        <ion-icon name="ios-videocam"></ion-icon>
+          &nbsp;Let me take a video !&nbsp;
+        <ion-icon name="ios-videocam"></ion-icon>
+      </button>
+
+      <!-- Affichage de la vidéo
+      ---- $path => chemin dans le téléphone -->
+      <video *ngIf="path" src="{{path}}" controls="controls" autoplay></video>
+    </ion-card-content>
+  </ion-card>
+  <!-- FIN VIDEO -->
+
+
+</ion-content>

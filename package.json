@@ -30,6 +30,7 @@
     "@ionic/storage": "2.0.1",
     "cordova-base64-to-gallery": "^4.1.2",
     "cordova-plugin-camera": "^2.4.1",
+    "cordova-plugin-ionic": "^2.0.3",
     "cordova-plugin-media-capture": "^1.4.3",
     "ionic-angular": "3.8.0",
     "ionicons": "3.0.0",
@@ -46,7 +47,12 @@
     "plugins": {
       "cordova-plugin-camera": {},
       "cordova-base64-to-gallery": {},
-      "cordova-plugin-media-capture": {}
+      "cordova-plugin-media-capture": {},
+      "cordova-plugin-ionic": {
+        "APP_ID": "a809bcdc",
+        "CHANNEL_NAME": "Master",
+        "UPDATE_METHOD": "auto"
+      }
     }
   }
 }
